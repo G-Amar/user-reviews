@@ -39,8 +39,18 @@ export const FeedbackProvider = ({children}) => {
     setReviewEdit({...reviewEdit, edit: value})
   }
 
-  const updateReview = (id, item) => {
-    setReviews(reviews.map((each) => each.id === id ? {...each, ...item} : each ))
+  const updateReview = async (id, item) => {
+    const response = await fetch(`/review/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(item)
+    })
+
+    const data = await response.json()
+
+    setReviews(reviews.map((each) => each.id === id ? {...each, ...data} : each ))
   }
   
   const deleteReview = async (id) => {
